@@ -242,19 +242,3 @@ Saucer is a passion project and I develop it in my free-time. If you'd like to s
 |                _(Built on [saucer4j](https://github.com/saucer/saucer4j))_                 |                              _(Built on their C# Saucer Bindings "IgniteView")_                              |
 
 </div>
-
-<br/>
-
-> [🎉 Become part of this list!](https://github.com/saucer/saucer/issues/new)
-
-## ⭐ Star History
-
-![](https://api.star-history.com/svg?repos=saucer/saucer&type=Date)
-
----
-
-> Saucer is 100% human written. No AI-Tools were used in the development process.
-
-<a href="https://notbyai.fyi/" target="_blank">
-  <img align="right" src="https://raw.githubusercontent.com/saucer/saucer.github.io/refs/heads/v7/src/assets/badge.svg" />
-</a>
