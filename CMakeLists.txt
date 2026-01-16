@@ -87,7 +87,7 @@ set(CPM_DOWNLOAD_ALL ${saucer_prefer_remote})
 # | Ensure valid library options                                                                          |
 # +-------------------------------------------------------------------------------------------------------+
 
-set(saucer_valid_backends Qt WebKitGtk WebView2 WebKit None Default)
+set(saucer_valid_backends Qt WebKitGtk WebView2 WebKit WPE None Default)
 set_property(CACHE saucer_backend PROPERTY STRINGS ${saucer_valid_backends})
 
 if (NOT saucer_backend IN_LIST saucer_valid_backends)
@@ -372,6 +372,29 @@ if (saucer_backend STREQUAL "WebView2")
   saucer_link_libraries(${PROJECT_NAME} CoreMessaging RuntimeObject Wininet Shlwapi gdiplus webview2)
 endif()
 
+if (saucer_backend STREQUAL "WPE")
+  file(GLOB_RECURSE wpe_sources
+    "src/wpe.*cpp"
+  )
+
+  target_sources(${PROJECT_NAME} PRIVATE ${wpe_sources})
+  target_compile_definitions(${PROJECT_NAME} PUBLIC SAUCER_WPE)
+
+  find_package(PkgConfig REQUIRED)
+
+  pkg_check_modules(wpe         REQUIRED IMPORTED_TARGET wpe-1.0)
+  pkg_check_modules(wpewebkit   REQUIRED IMPORTED_TARGET wpe-webkit-2.0)
+  pkg_check_modules(wpe-fdo     REQUIRED IMPORTED_TARGET wpebackend-fdo-1.0)
+  pkg_check_modules(json-glib   REQUIRED IMPORTED_TARGET json-glib-1.0)
+  pkg_check_modules(gdk-pixbuf  REQUIRED IMPORTED_TARGET gdk-pixbuf-2.0)
+  pkg_check_modules(libdrm      REQUIRED IMPORTED_TARGET libdrm)
+  pkg_check_modules(gbm         REQUIRED IMPORTED_TARGET gbm)
+  pkg_check_modules(egl         REQUIRED IMPORTED_TARGET egl)
+  pkg_check_modules(glesv2      REQUIRED IMPORTED_TARGET glesv2)
+
+  saucer_link_libraries(${PROJECT_NAME} PkgConfig::wpe PkgConfig::wpewebkit PkgConfig::wpe-fdo PkgConfig::json-glib PkgConfig::gdk-pixbuf PkgConfig::libdrm PkgConfig::gbm PkgConfig::egl PkgConfig::glesv2)
+endif()
+
 # +-------------------------------------------------------------------------------------------------------+
 # | Setup Serializers                                                                                     |
 # +-------------------------------------------------------------------------------------------------------+
@@ -445,6 +468,7 @@ if (saucer_examples)
   add_subdirectory("examples/multiple")
   add_subdirectory("examples/desktop")
   add_subdirectory("examples/expose")
+  add_subdirectory("examples/expose_env")
   add_subdirectory("examples/loop")
   add_subdirectory("examples/pdf")
 endif()
